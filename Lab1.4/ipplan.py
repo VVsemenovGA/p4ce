@@ -1,7 +1,7 @@
 from ipaddress import IPv4Network
 import random
 
-# Создаем класс, унаследованный от класса IPv4Network
+# Создание класса, унаследованного от класса IPv4Network
 class IPv4RandomNetwork(IPv4Network):
     def __init__(self, p_start=0, p_end=32):
         IPv4Network.__init__(self,
@@ -18,21 +18,19 @@ class IPv4RandomNetwork(IPv4Network):
     def key_value(self):
         return int(self.network_address) + (int(self.netmask) << 32)
 
-# Служебная функция для передачи в качестве параметра в функцию sorted
+# Random случайных чисел и список
+random.seed()
+
 def sortfunc(x):
     return x.key_value()
 
-# Инициализируем генератор случайных чисел и список
-random.seed()
-
 rnlist = []
 
-# Генерируем сети, помещаем в список
+# Генерация сети
 while len(rnlist) < 50:
     random_network = IPv4RandomNetwork(8, 24)
     if random_network.regular() and random_network not in rnlist: # проверка на регулярность и уникальность
         rnlist.append(random_network)
 
-# И выводим на экран
 for n in sorted(rnlist, key=sortfunc):
     print(n)
